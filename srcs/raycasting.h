@@ -1,6 +1,12 @@
 #ifndef RAYCASTING
 #define RAYCASTING
 
+typedef struct t_mlx_pnts
+{
+    void *mlx_pnt;
+    void *win_pnt;
+} s_mlx_pnts;
+
 typedef struct t_line
 {
     int *point1;

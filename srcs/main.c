@@ -56,31 +56,38 @@ void new_segment(s_line *segment, int pt1[2], int pt2[2])
     segment->m = (float)segment->dy / segment->dx;
 }
 
-int key_hook(int keycode, void *param)
+int key_hook(int keycode, s_mlx_pnts *pnts)
 {
     s_line new_line;
-    int pt1[2] = {10, 200};
+    static int y = 300;
+    int pt1[2] = {10, y};
     int pt2[2] = {300, 10};
     
     new_segment(&new_line, pt1, pt2);
-
+    y -= 10;
     if (keycode == SPACE)
-        drawline(new_line, param[0], param[1], 0xB0EACF);
+        drawline(new_line, pnts->mlx_pnt, pnts->win_pnt, 0xB0EACF);
     return keycode;
+}
+
+void set_up_pnts(s_mlx_pnts *pnts)
+{
+    pnts->mlx_pnt = mlx_init();
+    pnts->win_pnt = mlx_new_window(pnts->mlx_pnt, 500, 500, "Title");
 }
 
 int main()
 {
     void *mlx_pnt;
     void *win_pnt;
+    s_mlx_pnts mlx_pnts;
     int pt1[2] = {10, 400};
     int pt2[2] = {300, 10};
     s_line new_line;
 
+    set_up_pnts(&mlx_pnts);
     new_segment(&new_line, pt1, pt2);
-    mlx_pnt = mlx_init();
-    win_pnt = mlx_new_window (mlx_pnt, 500, 500, "Title");
-    drawline(new_line, mlx_pnt, win_pnt, 0xB0EACF);
-    mlx_key_hook(win_pnt, key_hook, {mlx_pnt, win_pnt});
-    mlx_loop(mlx_pnt);
+    drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, 0xB0EACF);
+    mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&mlx_pnts);
+    mlx_loop(mlx_pnts.mlx_pnt);
 }
