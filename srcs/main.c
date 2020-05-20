@@ -1,6 +1,7 @@
 #include <mlx.h>
 #include <stdio.h>
 #include "raycasting.h"
+#include "../libft/libft.h"
 
 int abs(int a)
 {
@@ -76,15 +77,24 @@ void set_up_pnts(s_mlx_pnts *pnts)
     pnts->win_pnt = mlx_new_window(pnts->mlx_pnt, 500, 500, "Title");
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    void *mlx_pnt;
-    void *win_pnt;
     s_mlx_pnts mlx_pnts;
     int pt1[2] = {10, 400};
     int pt2[2] = {300, 10};
     s_line new_line;
+    s_map map_info;
 
+    if (argc == 3)
+    {
+        if (ft_strcmp(argv[1], "-m") == 0)
+        {
+            if (!get_map(argv[2], &map_info))
+                return 0;
+            printf("%d\n", check_map_valid(&map_info));
+            free(map_info.full_file);
+        }
+    }
     set_up_pnts(&mlx_pnts);
     new_segment(&new_line, pt1, pt2);
     drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, 0xB0EACF);
