@@ -2,15 +2,17 @@
 Using C and a graphics library to recreate Wolfenstein 3D's graphic rendering of maps, for 42's Cube3D project.
 
 Minilibx is a graphic's program provided by 42. My code files are within srcs. To run files, first `make` minilibx, then, from the srcs folder, use the following command to compile the code:
->cc -I ../minilibx_macos/ test.c -L ../minilibx_macos/ -lmlx -framework OpenGL -framework AppKit
+
+>cc -I ../minilibx_macos/ main.c ../GNL/get_next_line.c ../GNL/get_next_line.h check_map.c ../libft/libft.a -L ../minilibx_macos/ -lmlx -framework OpenGL -framework AppKit
 
 Depending on the operating system you are using, minilibx may not compile. Other versions of milibx are available here: https://github.com/pbondoer/MinilibX
 
 ## The goal of the project:
 To end up with a program that allows a user to move along a map, which appears to be 3D.
 <br/>
-### Progress:
+### Check Ins:
 Date         | Update                                                                 | Next Goal
 ------------ | ---------------------------------------------------------------------- | ----------------
-05/15/20     | Created 'drawline' function, which draws a straight line on the window | Respond to user's key presses. Specifically, when user presses the space key, draw an additional line slightly above the current line
+5/15/20      | Created 'drawline' function, which draws a straight line on the window | Respond to user's key presses. Specifically, when user presses the space key, draw an additional line slightly above the current line
 5/15/20      | Added struct containing window and mlx pointers, and added function that listens for user inputs | User will pass map when running the program. Need to make sure this input is valid. For example - need to check that map is surrounded by walls on all sides
+5/19/20      | Added ability to read input from user, the path to a map file when the -m flag is present when running the executable. | Goal of checking validity of map still current, but needs to be broken up into more chunks. Present goal: parse through map, and store information into s_map struct.
