@@ -1,7 +1,4 @@
-#include <mlx.h>
-#include <stdio.h>
 #include "raycasting.h"
-#include "../libft/libft.h"
 
 int abs(int a)
 {

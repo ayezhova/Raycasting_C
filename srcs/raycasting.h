@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include "../GNL/get_next_line.h"
 #include <stdio.h>
+#include "../minilibx_macos/mlx.h"
+#include "../libft/libft.h"
 
 typedef struct t_mlx_pnts
 {
