@@ -74,6 +74,40 @@ void set_up_pnts(s_mlx_pnts *pnts)
     pnts->win_pnt = mlx_new_window(pnts->mlx_pnt, 500, 500, "Title");
 }
 
+// void set_pnts(s_map *map_info)
+// {
+//     map_info->R = &map_info->pnt_array[0];
+//     map_info->NO = &map_info->pnt_array[1];
+//     map_info->SO = &map_info->pnt_array[2];
+//     map_info->WE = &map_info->pnt_array[3];
+//     map_info->EA = &map_info->pnt_array[4];
+//     map_info->S = &map_info->pnt_array[5];
+//     map_info->F = &map_info->pnt_array[6];
+//     map_info->C = &map_info->pnt_array[7];
+// }
+
+void free_map_info(s_map *map_info)
+{
+    if (map_info->R)
+        free(map_info->R);
+    if (map_info->NO)
+        free(map_info->NO);
+    if (map_info->SO)
+        free(map_info->SO);
+    if (map_info->WE)
+        free(map_info->WE);
+    if (map_info->EA)
+        free(map_info->EA);
+    if (map_info->S)
+        free(map_info->S);
+    if (map_info->F)
+        free(map_info->F);
+    if (map_info->C)
+        free(map_info->C);
+    if (map_info->map)
+        free(map_info->map);
+}
+
 int main(int argc, char **argv)
 {
     s_mlx_pnts mlx_pnts;
@@ -81,20 +115,26 @@ int main(int argc, char **argv)
     int pt2[2] = {300, 10};
     s_line new_line;
     s_map map_info;
+    char *str;
 
+    str = malloc(100);
     if (argc == 3)
     {
         if (ft_strcmp(argv[1], "-m") == 0)
         {
-            if (!get_map(argv[2], &map_info))
-                return 0;
-            printf("%d\n", check_map_valid(&map_info));
-            free(map_info.full_file);
+            int ret = parse_file(argv[2], &map_info);
+            if (ret == -1)
+                printf("Error reading file");
+            else
+            {
+                printf("Read successfully");
+            }
+            free_map_info(&map_info);
         }
     }
-    set_up_pnts(&mlx_pnts);
-    new_segment(&new_line, pt1, pt2);
-    drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, 0xB0EACF);
-    mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&mlx_pnts);
-    mlx_loop(mlx_pnts.mlx_pnt);
+    // set_up_pnts(&mlx_pnts);
+    // new_segment(&new_line, pt1, pt2);
+    // drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, 0xB0EACF);
+    // mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&mlx_pnts);
+    // mlx_loop(mlx_pnts.mlx_pnt);
 }
