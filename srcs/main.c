@@ -74,36 +74,40 @@ void set_up_pnts(s_mlx_pnts *pnts)
     pnts->win_pnt = mlx_new_window(pnts->mlx_pnt, 500, 500, "Title");
 }
 
-// void set_pnts(s_map *map_info)
-// {
-//     map_info->R = &map_info->pnt_array[0];
-//     map_info->NO = &map_info->pnt_array[1];
-//     map_info->SO = &map_info->pnt_array[2];
-//     map_info->WE = &map_info->pnt_array[3];
-//     map_info->EA = &map_info->pnt_array[4];
-//     map_info->S = &map_info->pnt_array[5];
-//     map_info->F = &map_info->pnt_array[6];
-//     map_info->C = &map_info->pnt_array[7];
-// }
+void init_map_info(s_map *map_info)
+{
+    int i;
+
+    map_info->R = &map_info->pnt_array[0];
+    map_info->NO = &map_info->pnt_array[1];
+    map_info->SO = &map_info->pnt_array[2];
+    map_info->WE = &map_info->pnt_array[3];
+    map_info->EA = &map_info->pnt_array[4];
+    map_info->S = &map_info->pnt_array[5];
+    map_info->F = &map_info->pnt_array[6];
+    map_info->C = &map_info->pnt_array[7];
+    map_info->expected = ft_strsplit("R .NO .SO .WE .EA .S .F .C ", '.');
+    i = 0;
+    while (i < MAP_VAR)
+        map_info->pnt_array[i++] = NULL;
+    map_info->map = NULL;
+}
 
 void free_map_info(s_map *map_info)
 {
-    if (map_info->R)
-        free(map_info->R);
-    if (map_info->NO)
-        free(map_info->NO);
-    if (map_info->SO)
-        free(map_info->SO);
-    if (map_info->WE)
-        free(map_info->WE);
-    if (map_info->EA)
-        free(map_info->EA);
-    if (map_info->S)
-        free(map_info->S);
-    if (map_info->F)
-        free(map_info->F);
-    if (map_info->C)
-        free(map_info->C);
+    int i;
+
+    i = 0;
+    while (i < MAP_VAR)
+    {
+        if (map_info->pnt_array[i])
+            free(map_info->pnt_array[i]);
+        i++;
+    }
+    i = 0;
+    while (map_info->expected[i])
+        free(map_info->expected[i++]);
+    free(map_info->expected[i++]);
     if (map_info->map)
         free(map_info->map);
 }
@@ -117,7 +121,7 @@ int main(int argc, char **argv)
     s_map map_info;
     char *str;
 
-    str = malloc(100);
+    init_map_info(&map_info);
     if (argc == 3)
     {
         if (ft_strcmp(argv[1], "-m") == 0)

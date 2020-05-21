@@ -69,24 +69,18 @@ int get_map(int fd, char *str, s_map *map_info)
 int add_line_to_info(char *str, s_map *map_info, int fd)
 {
     int ret;
+    int i;
 
     ret = 1;
-    if (ft_strncmp(str, "R ", 2) == 0)
-        map_info->R = str;
-    else if (ft_strncmp(str, "NO ", 3) == 0)
-        map_info->NO = str;
-    else if (ft_strncmp(str, "SO ", 3) == 0)
-        map_info->SO = str;
-    else if (ft_strncmp(str, "WE ", 3) == 0)
-        map_info->WE = str;
-    else if (ft_strncmp(str, "EA ", 3) == 0)
-        map_info->EA = str;
-    else if (ft_strncmp(str, "S ", 2) == 0)
-        map_info->S = str;
-    else if (ft_strncmp(str, "F ", 2) == 0)
-        map_info->F = str;
-    else if (ft_strncmp(str, "C ", 2) == 0)
-        map_info->C = str;
+    i = 0;
+    while (i < MAP_VAR)
+    {
+        if (ft_strncmp(str, map_info->expected[i], ft_strlen(map_info->expected[i])) == 0)
+            break;
+        i++;
+    }
+    if (i <= MAP_VAR - 1)
+        map_info->pnt_array[i] = str;
     else
     {
         printf("Here\n");
@@ -125,33 +119,28 @@ int read_file(int fd, s_map *map_info)
 void print_info(s_map *map_info)
 {
     //debugging
-    printf("R\n");
-    if (map_info->R)
-        printf("%s\n", map_info->R);
-    printf("NO\n");
-    if (map_info->NO)
-        printf("%s\n", map_info->NO);
-    printf("SO\n");
-    if (map_info->SO)
-        printf("%s\n", map_info->SO);
-    printf("WE\n");
-    if (map_info->WE)
-        printf("%s\n", map_info->WE);
-    printf("EA\n");
-    if (map_info->EA)
-        printf("%s\n", map_info->EA);
-    printf("S\n");
-    if (map_info->S)
-        printf("%s\n", map_info->S);
-    printf("F\n");
-    if (map_info->F)
-        printf("%s\n", map_info->F);
-    printf("C\n");
-    if (map_info->C)
-        printf("%s\n", map_info->C);
-    printf("Map\n");
+    int i = 0;
+
+    while (i < MAP_VAR)
+    {
+        if (map_info->pnt_array[i])
+            printf("%s %s|||\n", map_info->expected[i], map_info->pnt_array[i]);
+        i++;
+    }
     if (map_info->map)
         printf("%s\n", map_info->map);
+}
+
+void init_data_given(s_map *map_info)
+{
+    int i;
+
+    i = 0;
+    while (i < MAP_VAR)
+    {
+        map_info->data_given[i] = 0;
+        i++;
+    }
 }
 
 int parse_file(char *map_file, s_map *map_info)
@@ -162,6 +151,7 @@ int parse_file(char *map_file, s_map *map_info)
 
     if (!(fd = open(map_file, O_RDONLY)))
         return 0;
+    init_data_given(map_info);
     ret = read_file(fd, map_info);
     print_info(map_info);
     close(fd);    
