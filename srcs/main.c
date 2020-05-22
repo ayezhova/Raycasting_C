@@ -110,6 +110,10 @@ void free_map_info(s_map *map_info)
     free(map_info->expected[i++]);
     if (map_info->map)
         free(map_info->map);
+    i = 0;
+    while (i < map_info->height)
+        free(map_info->map_array[i++]);
+    free(map_info->map_array);
 }
 
 int main(int argc, char **argv)
@@ -127,12 +131,19 @@ int main(int argc, char **argv)
         if (ft_strcmp(argv[1], "-m") == 0)
         {
             int ret = parse_file(argv[2], &map_info);
+            //for debigging. normally invalid map vs valid map
             if (ret == -1)
-                printf("Error reading file");
-            else
+                printf("Error reading file\n");
+            else if (ret == 0)
             {
-                printf("Read successfully");
+                printf("Valid Map\n");
             }
+            else if (ret == -2)
+                printf("Outside of map must be 1's\n");
+            else if (ret == -3)
+                printf("Player rotation must be present once within inside of map\n");
+            else if (ret == -4)
+                printf("Invalid characters in map\n");
             free_map_info(&map_info);
         }
     }
