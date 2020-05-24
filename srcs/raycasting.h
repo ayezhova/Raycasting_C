@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include "../GNL/get_next_line.h"
 #include <stdio.h>
-#include "../minilibx_macos/mlx.h"
+// #include "../minilibx_macos/mlx.h"
 #include "../libft/libft.h"
 
 typedef struct t_mlx_pnts
@@ -43,6 +43,7 @@ typedef struct t_map
     char **S;
     char **F;
     char **C;
+    int colors[2];
     char *map;
     char **map_array;
     int height;
@@ -66,5 +67,6 @@ int check_map_valid(s_map *map_info);
 // int get_map(char *map_file, s_map *map_info);
 int parse_file(char *map_file, s_map *map_info);
 int check_map_valid(s_map *map_info);
+int check_inputs(s_map *map_info);
 
 #endif

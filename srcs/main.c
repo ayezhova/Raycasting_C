@@ -91,6 +91,8 @@ void init_map_info(s_map *map_info)
     while (i < MAP_VAR)
         map_info->pnt_array[i++] = NULL;
     map_info->map = NULL;
+    map_info->colors[0] = 0xFFFFFF;
+    map_info->colors[1] = 0xFFFFFF;
 }
 
 void free_map_info(s_map *map_info)
@@ -107,7 +109,7 @@ void free_map_info(s_map *map_info)
     i = 0;
     while (map_info->expected[i])
         free(map_info->expected[i++]);
-    free(map_info->expected[i++]);
+    free(map_info->expected);
     if (map_info->map)
         free(map_info->map);
     i = 0;
@@ -144,6 +146,9 @@ int main(int argc, char **argv)
                 printf("Player rotation must be present once within inside of map\n");
             else if (ret == -4)
                 printf("Invalid characters in map\n");
+            else if (ret == -5)
+                printf("Invalid form\n");
+            printf("%d %d\n", map_info.colors[0], map_info.colors[1]);
             free_map_info(&map_info);
         }
     }
