@@ -7,16 +7,20 @@ int check_r(s_map *map_info)
     int i;
     char *str;
     int num;
+    int val;
 
     i = 2;
     num = 0;
     str = *map_info->R;
     while (i < ft_strlen(str))
     {
+        val = ft_atoi(&str[i]);
+        if (val < 100 || val > 2000)
+            return -5;
         if (num == 0)
-            map_info->R_x = ft_atoi(&str[i]);
+            map_info->R_x = val;
         else if (num == 1)
-            map_info->R_y = ft_atoi(&str[i]);
+            map_info->R_y = val;
         if (!(str[i] >= '0' && str[i] <= '9'))
             return -5;
         while (str[i] && str[i] >= '0' && str[i] <= '9')
@@ -93,7 +97,7 @@ int hex_str_to_int(char *hex)
     while (i < 6)
     {
         num *= 16;
-        if (hex[i] >= '0' && hex[i] <= '0')
+        if (hex[i] >= '0' && hex[i] <= '9')
             num += hex[i] - '0';
         else
             num += hex[i] - 'a' + 10;
@@ -128,7 +132,6 @@ int check_colors(s_map *map_info, int color)
             i++;
     }
     map_info->colors[color - 6] = hex_str_to_int(hex);
-    printf("%d\n", map_info->colors[color - 6]);
     //set hexstr to int, and that int to raycasting variable
     return (num != 3) ? -5 : 0;
 }

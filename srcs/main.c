@@ -54,24 +54,24 @@ void new_segment(s_line *segment, int pt1[2], int pt2[2])
     segment->m = (float)segment->dy / segment->dx;
 }
 
-int key_hook(int keycode, s_mlx_pnts *pnts)
+int key_hook(int keycode, s_drawinfo *draw_info)
 {
     s_line new_line;
     static int y = 300;
     int pt1[2] = {10, y};
     int pt2[2] = {300, 10};
-    
+
     new_segment(&new_line, pt1, pt2);
     y -= 10;
     if (keycode == SPACE)
-        drawline(new_line, pnts->mlx_pnt, pnts->win_pnt, 0xB0EACF);
+        drawline(new_line, draw_info->mlx_pnts->mlx_pnt , draw_info->mlx_pnts->win_pnt, draw_info->map_info->colors[1]);
     return keycode;
 }
 
-void set_up_pnts(s_mlx_pnts *pnts)
+void set_up_pnts(s_mlx_pnts *pnts, s_map *map_info)
 {
     pnts->mlx_pnt = mlx_init();
-    pnts->win_pnt = mlx_new_window(pnts->mlx_pnt, 500, 500, "Title");
+    pnts->win_pnt = mlx_new_window(pnts->mlx_pnt, map_info->R_x, map_info->R_y, "Title");
 }
 
 void init_map_info(s_map *map_info)
@@ -93,6 +93,8 @@ void init_map_info(s_map *map_info)
     map_info->map = NULL;
     map_info->colors[0] = 0xFFFFFF;
     map_info->colors[1] = 0xFFFFFF;
+    map_info->R_x = 500;
+    map_info->R_y = 500;
 }
 
 void free_map_info(s_map *map_info)
@@ -126,6 +128,7 @@ int main(int argc, char **argv)
     s_line new_line;
     s_map map_info;
     char *str;
+    s_drawinfo draw_info;
 
     init_map_info(&map_info);
     if (argc == 3)
@@ -152,9 +155,11 @@ int main(int argc, char **argv)
             free_map_info(&map_info);
         }
     }
-    // set_up_pnts(&mlx_pnts);
-    // new_segment(&new_line, pt1, pt2);
-    // drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, 0xB0EACF);
-    // mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&mlx_pnts);
-    // mlx_loop(mlx_pnts.mlx_pnt);
+    set_up_pnts(&mlx_pnts, &map_info);
+    new_segment(&new_line, pt1, pt2);
+    drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, map_info.colors[0]);
+    draw_info.map_info = &map_info;
+    draw_info.mlx_pnts = &mlx_pnts;
+    mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
+    mlx_loop(mlx_pnts.mlx_pnt);
 }

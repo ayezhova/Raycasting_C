@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include "../GNL/get_next_line.h"
 #include <stdio.h>
-// #include "../minilibx_macos/mlx.h"
+#include "../minilibx_macos/mlx.h"
 #include "../libft/libft.h"
 
 typedef struct t_mlx_pnts
@@ -50,6 +50,11 @@ typedef struct t_map
     // int width;
 } s_map;
 
+typedef struct t_drawinfo
+{
+    s_map *map_info;
+    s_mlx_pnts *mlx_pnts;
+} s_drawinfo;
 
 /* Key Codes */
 # define SPACE 49
