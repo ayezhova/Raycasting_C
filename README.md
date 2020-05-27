@@ -19,3 +19,4 @@ Date         | Update                                                           
 5/22/20      | Checking that input map is valid! That all borders are surrounded by 1's, that a player orientation is provided only once and that no invalid characters are used.                           | Check that all other player inputs are also valid. Ex: R is in the form "R # #".
 5/24/20      | Checking that user inputs are in a valid form, also converting RGB inputs to a useable int value | Use player inputs in order to open window of player input size, or default if not included, and draw lines in player requested colors, if provided.
 5/25/20      | Able to use data stored in struct to affect graphic display.           | Use mlx's image functions in order to display a sprite onto window.
+5/26/20      | Using mlx's library to display an image on to the window.              | Scale photos bigger/smaller.
