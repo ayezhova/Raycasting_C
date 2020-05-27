@@ -69,9 +69,11 @@ typedef struct t_drawinfo
 /* Reading file */
 int get_next_line(const int fd, char **line);
 int check_map_valid(s_map *map_info);
-// int get_map(char *map_file, s_map *map_info);
 int parse_file(char *map_file, s_map *map_info);
 int check_map_valid(s_map *map_info);
 int check_inputs(s_map *map_info);
+
+/* Put Image */
+void *put_image(s_drawinfo *drawinfo);
 
 #endif

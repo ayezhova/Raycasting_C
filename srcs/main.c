@@ -129,6 +129,7 @@ int main(int argc, char **argv)
     s_map map_info;
     char *str;
     s_drawinfo draw_info;
+    void *img;
 
     init_map_info(&map_info);
     if (argc == 3)
@@ -161,5 +162,8 @@ int main(int argc, char **argv)
     draw_info.map_info = &map_info;
     draw_info.mlx_pnts = &mlx_pnts;
     mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
+    img = put_image(&draw_info);
     mlx_loop(mlx_pnts.mlx_pnt);
+    if (img)
+        mlx_destroy_image(mlx_pnts.mlx_pnt, img);
 }
