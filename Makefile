@@ -1,6 +1,6 @@
 NAME = cub3d
 SRC = srcs
-OBJ = $(addprefix $(SRC)/,main.o check_map.o check_map_valid.o check_inputs.o put_image.o)
+OBJ = $(addprefix $(SRC)/,main.o check_map.o check_map_valid.o check_inputs.o put_image.o put_image_small.o)
 OBJ_INC = raycasting.h
 LIBFT = libft/libft.a
 LIBFT_INC = libft/libft.h

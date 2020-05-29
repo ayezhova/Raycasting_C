@@ -129,7 +129,7 @@ int main(int argc, char **argv)
     s_map map_info;
     char *str;
     s_drawinfo draw_info;
-    void *img;
+    s_img img;
 
     init_map_info(&map_info);
     if (argc == 3)
@@ -158,12 +158,12 @@ int main(int argc, char **argv)
     }
     set_up_pnts(&mlx_pnts, &map_info);
     new_segment(&new_line, pt1, pt2);
-    drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, map_info.colors[0]);
+    // drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, map_info.colors[0]);
     draw_info.map_info = &map_info;
     draw_info.mlx_pnts = &mlx_pnts;
     mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
-    img = put_image(&draw_info);
+    img = ratio_image(&draw_info, "Images/302Sableye.xpm", .1);
+    mlx_put_image_to_window(mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, img.img_pnt, 10, 10);
+    mlx_destroy_image(mlx_pnts.mlx_pnt, img.img_pnt);
     mlx_loop(mlx_pnts.mlx_pnt);
-    if (img)
-        mlx_destroy_image(mlx_pnts.mlx_pnt, img);
 }

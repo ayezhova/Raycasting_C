@@ -47,7 +47,6 @@ typedef struct t_map
     char *map;
     char **map_array;
     int height;
-    // int width;
 } s_map;
 
 typedef struct t_drawinfo
@@ -55,6 +54,29 @@ typedef struct t_drawinfo
     s_map *map_info;
     s_mlx_pnts *mlx_pnts;
 } s_drawinfo;
+
+/* Image struct */
+typedef struct t_img
+{
+    void *img_pnt;
+    int width;
+    int height;
+    int bits_per_pixel;
+    int size_line;
+    int endian;
+    char *mem_address;
+} s_img;
+
+typedef struct t_img_iter
+{
+    int i;
+    int j;
+    int bit;
+    int line;
+    int line2;
+    int next_skip_col;
+    int length_skip;
+} s_img_iter;
 
 /* Key Codes */
 # define SPACE 49
@@ -74,6 +96,7 @@ int check_map_valid(s_map *map_info);
 int check_inputs(s_map *map_info);
 
 /* Put Image */
-void *put_image(s_drawinfo *drawinfo);
+s_img ratio_image(s_drawinfo *drawinfo, char *img_path, float ratio);
+void set_img_colors_small(s_img orig_img, s_img new_img, int ratio);
 
 #endif
