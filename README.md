@@ -20,3 +20,4 @@ Date         | Update                                                           
 5/24/20      | Checking that user inputs are in a valid form, also converting RGB inputs to a useable int value | Use player inputs in order to open window of player input size, or default if not included, and draw lines in player requested colors, if provided.
 5/25/20      | Able to use data stored in struct to affect graphic display.           | Use mlx's image functions in order to display a sprite onto window.
 5/26/20      | Using mlx's library to display an image on to the window.              | Scale photos bigger/smaller.
+5/28/20      | Able to scale an image down by tenths (90%, 80% .... 10%).             | When image needs to be bigger, rather than scaling it larger, create a tile pattern with the image. Potential future goal: If necessary, add function that scales by hundreds (99%, 98%, .... 1%)
