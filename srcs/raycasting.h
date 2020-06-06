@@ -72,11 +72,28 @@ typedef struct t_img_iter
     int i;
     int j;
     int bit;
-    int line;
-    int line2;
+    int bit_size;
+    int line_orig;
+    int line_new;
     int next_skip_col;
     int length_skip;
+    float pix_change;
 } s_img_iter;
+
+typedef struct t_trap_img_dimen
+{
+    int start_len;
+    int end_len;
+    int new_width;
+} s_trap_img_dimen;
+
+typedef struct t_trap_image
+{
+    int col_orig;
+    int col_new;
+    int start_line;
+    int col_height;
+} s_trap_image;
 
 /* Key Codes */
 # define SPACE 49
@@ -98,5 +115,9 @@ int check_inputs(s_map *map_info);
 /* Put Image */
 s_img ratio_image(s_drawinfo *drawinfo, char *img_path, float ratio);
 void set_img_colors_small(s_img orig_img, s_img new_img, int ratio);
+s_img tile_image(s_drawinfo *drawinfo, char *img_path, float x_times, float y_times);
+int val_small(s_img img, s_img_iter s_i, int orig);
+int val(s_img img, int line, int  bit, int k);
+s_img make_trapezoid_image(s_drawinfo *drawinfo, s_img orig_img, s_trap_img_dimen trap_dimen);
 
 #endif

@@ -162,8 +162,17 @@ int main(int argc, char **argv)
     draw_info.map_info = &map_info;
     draw_info.mlx_pnts = &mlx_pnts;
     mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
-    img = ratio_image(&draw_info, "Images/302Sableye.xpm", .1);
+    // img = ratio_image(&draw_info, "Images/302Sableye.xpm", .1);
+    img = tile_image(&draw_info, "Images/bluestone.xpm", 2, 2);
+    printf("w: %d h: %d\n", img.width, img.height);
     mlx_put_image_to_window(mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, img.img_pnt, 10, 10);
+    s_img new_img;
+    s_trap_img_dimen trap_dimen;
+    trap_dimen.start_len = 200;
+    trap_dimen.end_len = 50;
+    trap_dimen.new_width = 400;
+    new_img = make_trapezoid_image(&draw_info, img, trap_dimen);
+    mlx_put_image_to_window(mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, new_img.img_pnt, 0, 200);
     mlx_destroy_image(mlx_pnts.mlx_pnt, img.img_pnt);
     mlx_loop(mlx_pnts.mlx_pnt);
 }
