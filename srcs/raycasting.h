@@ -118,6 +118,12 @@ void set_img_colors_small(s_img orig_img, s_img new_img, int ratio);
 s_img tile_image(s_drawinfo *drawinfo, char *img_path, float x_times, float y_times);
 int val_small(s_img img, s_img_iter s_i, int orig);
 int val(s_img img, int line, int  bit, int k);
+
+/* Manipulate image into trapezoid shape */
 s_img make_trapezoid_image(s_drawinfo *drawinfo, s_img orig_img, s_trap_img_dimen trap_dimen);
+void draw_line_longer(s_img orig_img, s_img new_img, s_trap_image s_t_i);
+void draw_line_shorter(s_img orig_img, s_img new_img, s_trap_image s_t_i);
+void get_col_height(s_img *img, s_trap_img_dimen dimen,
+    s_trap_image *s_t_i, float height_change);
 
 #endif
