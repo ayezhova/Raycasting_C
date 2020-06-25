@@ -130,6 +130,8 @@ int main(int argc, char **argv)
     char *str;
     s_drawinfo draw_info;
     s_img img;
+    s_position pos_info;
+
 
     init_map_info(&map_info);
     if (argc == 3)
@@ -143,6 +145,10 @@ int main(int argc, char **argv)
             else if (ret == 0)
             {
                 printf("Valid Map\n");
+                set_up_pos_info(&pos_info, &map_info);
+                printf("Camera: %f %f\n",pos_info.camera_plane[0], pos_info.camera_plane[1]);
+                printf("Direction: %f %f\n",pos_info.cur_direction[0], pos_info.cur_direction[1]);
+                printf("Position: %f %f\n",pos_info.cur_position[0], pos_info.cur_position[1]);
             }
             else if (ret == -2)
                 printf("Outside of map must be 1's\n");
@@ -152,10 +158,13 @@ int main(int argc, char **argv)
                 printf("Invalid characters in map\n");
             else if (ret == -5)
                 printf("Invalid form\n");
-            printf("%d %d\n", map_info.colors[0], map_info.colors[1]);
+            // printf("%d %d\n", map_info.colors[0], map_info.colors[1]);
             free_map_info(&map_info);
         }
     }
+    //wrap whole thing in infinite loop - how works with mlx loop?
+
+    /*
     set_up_pnts(&mlx_pnts, &map_info);
     new_segment(&new_line, pt1, pt2);
     // drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, map_info.colors[0]);
@@ -169,10 +178,10 @@ int main(int argc, char **argv)
     s_img new_img;
     s_trap_img_dimen trap_dimen;
     trap_dimen.start_len = 250;
-    trap_dimen.end_len = 150;
-    trap_dimen.new_width = 100;
+    trap_dimen.end_len = 20;
+    trap_dimen.new_width = 600;
     new_img = make_trapezoid_image(&draw_info, img, trap_dimen);
     mlx_put_image_to_window(mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, new_img.img_pnt, 0, 200);
     mlx_destroy_image(mlx_pnts.mlx_pnt, img.img_pnt);
-    mlx_loop(mlx_pnts.mlx_pnt);
+    mlx_loop(mlx_pnts.mlx_pnt); */
 }

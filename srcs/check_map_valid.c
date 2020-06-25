@@ -32,7 +32,7 @@ int check_orientarion(int i, int j, s_map *map_info)
 {
     if (is_edge(i, j, map_info))
         return -3;
-    map_info->orientation = map_info->map[i];
+    map_info->orientation = map_info->map_array[i][j];
     map_info->map_array[i][j] = '0';
     if (map_info->start[0] != -1)
         return -5;

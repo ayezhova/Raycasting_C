@@ -95,6 +95,13 @@ typedef struct t_trap_image
     int col_height;
 } s_trap_image;
 
+typedef struct t_position
+{
+    float cur_position[2];
+    float cur_direction[2];
+    float camera_plane[2];
+} s_position;
+
 /* Key Codes */
 # define SPACE 49
 # define ESC 53
@@ -112,6 +119,9 @@ int parse_file(char *map_file, s_map *map_info);
 int check_map_valid(s_map *map_info);
 int check_inputs(s_map *map_info);
 
+/* Set up direction and camera variables */
+void set_up_pos_info(s_position *pos_info, s_map *map_info);
+
 /* Put Image */
 s_img ratio_image(s_drawinfo *drawinfo, char *img_path, float ratio);
 void set_img_colors_small(s_img orig_img, s_img new_img, int ratio);
@@ -125,5 +135,7 @@ void draw_line_longer(s_img orig_img, s_img new_img, s_trap_image s_t_i);
 void draw_line_shorter(s_img orig_img, s_img new_img, s_trap_image s_t_i);
 void get_col_height(s_img *img, s_trap_img_dimen dimen,
     s_trap_image *s_t_i, float height_change);
+float get_constant(int width_orig, int width_new);
+
 
 #endif
