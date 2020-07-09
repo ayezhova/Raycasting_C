@@ -5,7 +5,7 @@ int abs(int a)
     return a < 0 ? a * -1 : a;
 }
 
-void drawline(s_line new_line, void *mlx_pnt, void *win_pnt, int color)
+void drawline(s_line new_line, s_mlx_pnts *mlx_pnts, int color)
 {
     int x;
     int y;
@@ -16,7 +16,7 @@ void drawline(s_line new_line, void *mlx_pnt, void *win_pnt, int color)
     p = 2 * new_line.dy - new_line.dx;
     while (x <= new_line.point2[0])
     {
-        mlx_pixel_put(mlx_pnt, win_pnt, x, y, color);
+        mlx_pixel_put(mlx_pnts->mlx_pnt, mlx_pnts->win_pnt, x, y, color);
         if (p >= 0)
         {
             y += new_line.slope;
@@ -63,8 +63,9 @@ int key_hook(int keycode, s_drawinfo *draw_info)
 
     new_segment(&new_line, pt1, pt2);
     y -= 10;
-    if (keycode == SPACE)
-        drawline(new_line, draw_info->mlx_pnts->mlx_pnt , draw_info->mlx_pnts->win_pnt, draw_info->map_info->colors[1]);
+    printf("Fuck if I know \n");
+    // if (keycode == SPACE)
+    //     drawline(new_line, draw_info->mlx_pnts, draw_info->map_info->colors[0]);
     return keycode;
 }
 
@@ -123,8 +124,8 @@ void free_map_info(s_map *map_info)
 int main(int argc, char **argv)
 {
     s_mlx_pnts mlx_pnts;
-    int pt1[2] = {10, 400};
-    int pt2[2] = {300, 10};
+    int pt1[2] = {10, 300};
+    int pt2[2] = {10, 10};
     s_line new_line;
     s_map map_info;
     char *str;
@@ -144,11 +145,13 @@ int main(int argc, char **argv)
                 printf("Error reading file\n");
             else if (ret == 0)
             {
-                printf("Valid Map\n");
+                printf("Valid Map\n"); 
                 set_up_pos_info(&pos_info, &map_info);
                 printf("Camera: %f %f\n",pos_info.camera_plane[0], pos_info.camera_plane[1]);
                 printf("Direction: %f %f\n",pos_info.cur_direction[0], pos_info.cur_direction[1]);
                 printf("Position: %f %f\n",pos_info.cur_position[0], pos_info.cur_position[1]);
+                set_up_pnts(&mlx_pnts, &map_info);
+                draw_screen(&map_info, &pos_info, &mlx_pnts);
             }
             else if (ret == -2)
                 printf("Outside of map must be 1's\n");
@@ -164,10 +167,12 @@ int main(int argc, char **argv)
     }
     //wrap whole thing in infinite loop - how works with mlx loop?
 
-    /*
-    set_up_pnts(&mlx_pnts, &map_info);
+    
+    // set_up_pnts(&mlx_pnts, &map_info);
     new_segment(&new_line, pt1, pt2);
-    // drawline(new_line, mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, map_info.colors[0]);
+    drawline(new_line, &mlx_pnts, map_info.colors[0]);
+    mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
+    /*
     draw_info.map_info = &map_info;
     draw_info.mlx_pnts = &mlx_pnts;
     mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
@@ -184,4 +189,5 @@ int main(int argc, char **argv)
     mlx_put_image_to_window(mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, new_img.img_pnt, 0, 200);
     mlx_destroy_image(mlx_pnts.mlx_pnt, img.img_pnt);
     mlx_loop(mlx_pnts.mlx_pnt); */
+    mlx_loop(mlx_pnts.mlx_pnt);
 }

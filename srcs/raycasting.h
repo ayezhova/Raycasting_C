@@ -102,6 +102,24 @@ typedef struct t_position
     float camera_plane[2];
 } s_position;
 
+/* Calculating distance */
+typedef struct t_dist_calc
+{
+    float camera_loc;
+    float ray_dir[2];
+    int map_loc[2];
+    float dist_next_x;
+    float dist_next_y;
+    float change_in_x;
+    float change_in_y;
+    int step_dir[2];
+    int side_hit;
+    float dist_to_wall;
+    int line_height;
+    int row_start;
+    int row_stop;
+} s_dist_calc;
+
 /* Key Codes */
 # define SPACE 49
 # define ESC 53
@@ -137,5 +155,16 @@ void get_col_height(s_img *img, s_trap_img_dimen dimen,
     s_trap_image *s_t_i, float height_change);
 float get_constant(int width_orig, int width_new);
 
+
+/* Draw Screen */
+void draw_screen(s_map *map_info, s_position *pos, s_mlx_pnts *mlx_pnts);
+void new_segment(s_line *segment, int pt1[2], int pt2[2]);
+void drawline(s_line new_line, s_mlx_pnts *mlx_pnts, int color);
+
+
+
+/* MOVE TO LIBFT */
+int abs(int a);
+float ft_fabs(float a);
 
 #endif

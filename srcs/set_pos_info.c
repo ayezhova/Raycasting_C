@@ -10,7 +10,6 @@ void set_north_direction(s_position *pos_info)
 
 void set_east_direction(s_position *pos_info)
 {
-    printf("HERE");
     pos_info->cur_direction[0] = 1.0;
     pos_info->cur_direction[1] = 0.0;
     pos_info->camera_plane[0] = 0.0;
@@ -37,7 +36,6 @@ void set_up_pos_info(s_position *pos_info, s_map *map_info)
 {
     pos_info->cur_position[0] = (float)map_info->start[0];
     pos_info->cur_position[1] = (float)map_info->start[1];
-    printf("orient: %c\n", map_info->orientation);
     if (map_info->orientation == 'N')
         set_north_direction(pos_info);
     if (map_info->orientation == 'E')
