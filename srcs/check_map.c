@@ -121,6 +121,8 @@ int parse_file(char *map_file, s_map *map_info)
         ret = check_map_valid(map_info);
     if (ret == 0)
         ret = check_inputs(map_info);
-    close(fd);    
+    close(fd);
+    if (ret == 0)
+        map_info->map_int_array = map_int_array(map_info->map_array);
     return ret;
 }

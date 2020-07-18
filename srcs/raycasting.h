@@ -3,9 +3,15 @@
 
 #include <fcntl.h>
 #include "../GNL/get_next_line.h"
-#include <stdio.h>
+#include <stdio.h> /* DEL */
+#include <math.h>
 #include "../minilibx_macos/mlx.h"
 #include "../libft/libft.h"
+
+
+/* Constants for Move/Rotate */
+# define MOVE_SPEED 0.5
+# define ROT_SPEED 0.1
 
 typedef struct t_mlx_pnts
 {
@@ -46,6 +52,7 @@ typedef struct t_map
     int colors[2];
     char *map;
     char **map_array;
+    int **map_int_array;
     int height;
 } s_map;
 
@@ -120,6 +127,14 @@ typedef struct t_dist_calc
     int row_stop;
 } s_dist_calc;
 
+typedef struct t_key_arg
+{
+    s_map *map_info;
+    s_position *pos;
+    s_mlx_pnts *mlx_pnts;
+    char **map_array;
+} s_key_arg;
+
 /* Key Codes */
 # define SPACE 49
 # define ESC 53
@@ -136,6 +151,7 @@ int check_map_valid(s_map *map_info);
 int parse_file(char *map_file, s_map *map_info);
 int check_map_valid(s_map *map_info);
 int check_inputs(s_map *map_info);
+int **map_int_array(char **map_array);
 
 /* Set up direction and camera variables */
 void set_up_pos_info(s_position *pos_info, s_map *map_info);
@@ -160,11 +176,18 @@ float get_constant(int width_orig, int width_new);
 void draw_screen(s_map *map_info, s_position *pos, s_mlx_pnts *mlx_pnts);
 void new_segment(s_line *segment, int pt1[2], int pt2[2]);
 void drawline(s_line new_line, s_mlx_pnts *mlx_pnts, int color);
+void drawcol(int col, s_dist_calc *dist, s_mlx_pnts *mlx_pnts, int color);
 
 
 
 /* MOVE TO LIBFT */
 int abs(int a);
 float ft_fabs(float a);
+
+/* KEY EVENTS */
+void move_up(int **map, s_position *pos);
+void move_down(int **map, s_position *pos);
+void rotate_right(int **map, s_position *pos);
+void rotate_left(int **map, s_position *pos);
 
 #endif

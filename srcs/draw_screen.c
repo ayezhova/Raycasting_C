@@ -63,6 +63,7 @@ void move_till_wall(s_dist_calc *dist, s_map *map_info)
             // printf("b");
             dist->dist_next_x += dist->change_in_x;
             dist->map_loc[0] += dist->step_dir[0];
+
             dist->side_hit = 0;
         }
         else
@@ -72,9 +73,10 @@ void move_till_wall(s_dist_calc *dist, s_map *map_info)
             dist->map_loc[1] += dist->step_dir[1];
             dist->side_hit = 1;
         }
-        if (map_info->map_array[dist->map_loc[0]][dist->map_loc[1]] == '1')
+        if (map_info->map_int_array[dist->map_loc[0]][dist->map_loc[1]] == 1)
             hit = 1;
     }
+    // while (1);
 }
 
 void calc_height_wall(s_dist_calc *dist, s_map *map_info, s_position *pos)
@@ -95,7 +97,8 @@ void calc_height_wall(s_dist_calc *dist, s_map *map_info, s_position *pos)
     // printf("expec: %f, width: %d\n", map_info->R_y / dist->dist_to_wall, map_info->R_y);
     //take div by 0 into account
     dist->line_height = (int)(map_info->R_y / dist->dist_to_wall);
-    dist->line_height = dist->dist_to_wall == 0 ? map_info->R_y : (int)(map_info->R_y / dist->dist_to_wall);
+    //closest can get to wall when 0 steps away will be 1.2
+    dist->line_height = dist->dist_to_wall == 0 ? map_info->R_y * 1.2 : (int)(map_info->R_y / dist->dist_to_wall);
     // printf("line height: %d\n", dist->line_height);
     start = map_info->R_y / 2 - dist->line_height / 2;
     dist->row_start = start > 0 ? start : 0;
@@ -107,9 +110,9 @@ void draw_screen(s_map *map_info, s_position *pos, s_mlx_pnts *mlx_pnts)
 {
     int col;
     s_dist_calc dist;
-    s_line new_line;
-    int point1[2];
-    int point2[2];
+    // s_line new_line;
+    // int point1[2];
+    // int point2[2];
 
 
     col = 0;
@@ -120,17 +123,22 @@ void draw_screen(s_map *map_info, s_position *pos, s_mlx_pnts *mlx_pnts)
         set_dist_vars(&dist, col, map_info, pos);
         move_till_wall(&dist, map_info);
         calc_height_wall(&dist, map_info, pos);
-        point1[0] = col;
-        point1[1] = dist.row_start;
-        point2[0] = col;
-        point2[1] = dist.row_stop;
-        // printf("(%d, %d), (%d %d)\n", point1[0], point1[1], point2[0], point2[1]);
-        new_segment(&new_line, point1, point2);
+        // point1[0] = col;
+        // point1[1] = dist.row_start;
+        // point2[0] = col;
+        // point2[1] = dist.row_stop;
+        // new_segment(&new_line, point1, point2);
+        // if (dist.side_hit == 0)
+        //     drawline(new_line, mlx_pnts, 0x346eeb);
+        // else
+        // {
+        //     drawline(new_line, mlx_pnts, 0x475470);
+        // }
         if (dist.side_hit == 0)
-            drawline(new_line, mlx_pnts, 0x346eeb);
+            drawcol(col, &dist, mlx_pnts, 0x346eeb);
         else
         {
-            drawline(new_line, mlx_pnts, 0x475470);
+            drawcol(col, &dist, mlx_pnts, 0x475470);
         }
         col++;
     }

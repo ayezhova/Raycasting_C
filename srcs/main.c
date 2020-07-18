@@ -30,6 +30,18 @@ void drawline(s_line new_line, s_mlx_pnts *mlx_pnts, int color)
     }
 }
 
+void drawcol(int col, s_dist_calc *dist, s_mlx_pnts *mlx_pnts, int color)
+{
+    int y;
+
+    y = dist->row_start;
+    while (y < dist->row_stop)
+    {
+        mlx_pixel_put(mlx_pnts->mlx_pnt, mlx_pnts->win_pnt, col, y, color);
+        y++;
+    }
+}
+
 void new_segment(s_line *segment, int pt1[2], int pt2[2])
 {
     int *start;
@@ -54,18 +66,18 @@ void new_segment(s_line *segment, int pt1[2], int pt2[2])
     segment->m = (float)segment->dy / segment->dx;
 }
 
-int key_hook(int keycode, s_drawinfo *draw_info)
+int key_hook(int keycode, s_key_arg *key_args)
 {
-    s_line new_line;
-    static int y = 300;
-    int pt1[2] = {10, y};
-    int pt2[2] = {300, 10};
-
-    new_segment(&new_line, pt1, pt2);
-    y -= 10;
-    printf("Fuck if I know \n");
-    // if (keycode == SPACE)
-    //     drawline(new_line, draw_info->mlx_pnts, draw_info->map_info->colors[0]);
+    if (keycode == UP_ARROW)
+        move_up(key_args->map_info->map_int_array, key_args->pos);
+    else if (keycode == DOWN_ARROW)
+        move_down(key_args->map_info->map_int_array, key_args->pos);
+    else if (keycode == RIGHT_ARROW)
+        rotate_right(key_args->map_info->map_int_array, key_args->pos);
+    else if (keycode == LEFT_ARROW)
+        rotate_left(key_args->map_info->map_int_array, key_args->pos);
+    mlx_clear_window(key_args->mlx_pnts->mlx_pnt, key_args->mlx_pnts->win_pnt);
+    draw_screen(key_args->map_info, key_args->pos, key_args->mlx_pnts);
     return keycode;
 }
 
@@ -117,9 +129,36 @@ void free_map_info(s_map *map_info)
         free(map_info->map);
     i = 0;
     while (i < map_info->height)
+    {
+        free(map_info->map_int_array[i]);
         free(map_info->map_array[i++]);
+    }
     free(map_info->map_array);
+    free(map_info->map_int_array);
 }
+
+void set_key_args(s_key_arg *key_args, s_map *map_info, s_position *pos_info,
+    s_mlx_pnts *mlx_pnts)
+{
+    key_args->map_info = map_info;
+    key_args->pos = pos_info;
+    key_args->mlx_pnts = mlx_pnts;
+    key_args->map_array = map_info->map_array;
+}
+
+int draw_loop(s_key_arg *key_args)
+{
+    static int update;
+
+    update = 1;
+    if (update == 1) 
+    {
+        mlx_clear_window(key_args->mlx_pnts->mlx_pnt, key_args->mlx_pnts->win_pnt);
+        draw_screen(key_args->map_info, key_args->pos, key_args->mlx_pnts);
+    }
+    update = 0;
+    return 1;
+} 
 
 int main(int argc, char **argv)
 {
@@ -132,6 +171,7 @@ int main(int argc, char **argv)
     s_drawinfo draw_info;
     s_img img;
     s_position pos_info;
+    s_key_arg key_args;
 
 
     init_map_info(&map_info);
@@ -151,7 +191,11 @@ int main(int argc, char **argv)
                 printf("Direction: %f %f\n",pos_info.cur_direction[0], pos_info.cur_direction[1]);
                 printf("Position: %f %f\n",pos_info.cur_position[0], pos_info.cur_position[1]);
                 set_up_pnts(&mlx_pnts, &map_info);
+                mlx_key_hook(mlx_pnts.win_pnt, key_hook, &key_args);
+                set_key_args(&key_args, &map_info, &pos_info, &mlx_pnts);
+                // mlx_loop_hook(mlx_pnts.mlx_pnt, draw_loop, (void *)&key_args);
                 draw_screen(&map_info, &pos_info, &mlx_pnts);
+                mlx_loop(mlx_pnts.mlx_pnt);
             }
             else if (ret == -2)
                 printf("Outside of map must be 1's\n");
@@ -169,9 +213,7 @@ int main(int argc, char **argv)
 
     
     // set_up_pnts(&mlx_pnts, &map_info);
-    new_segment(&new_line, pt1, pt2);
-    drawline(new_line, &mlx_pnts, map_info.colors[0]);
-    mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&draw_info);
+    // mlx_key_hook(mlx_pnts.win_pnt, key_hook, (void *)&key_args);
     /*
     draw_info.map_info = &map_info;
     draw_info.mlx_pnts = &mlx_pnts;
@@ -189,5 +231,4 @@ int main(int argc, char **argv)
     mlx_put_image_to_window(mlx_pnts.mlx_pnt, mlx_pnts.win_pnt, new_img.img_pnt, 0, 200);
     mlx_destroy_image(mlx_pnts.mlx_pnt, img.img_pnt);
     mlx_loop(mlx_pnts.mlx_pnt); */
-    mlx_loop(mlx_pnts.mlx_pnt);
 }
