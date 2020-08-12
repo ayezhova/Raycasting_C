@@ -9,14 +9,10 @@ int get_map(int fd, char *str, s_map *map_info)
 
     map_info->map = ft_strnew(0);
     map_info->height = 0;
-    // map_info->width = 0;
     line = str;
     ret = 1;
     while (ret == 1)
     {
-        // if (ft_strlen(line) > map_info->width)
-        //     map_info->width = ft_strlen(line);
-        // printf("%d\n", map_info->width);
         temp1 = ft_strjoin(map_info->map, line);
         free(line);
         temp2 = ft_strjoin(temp1, "\n");
@@ -106,6 +102,31 @@ void init_data_given(s_map *map_info)
     }
 }
 
+void free_char_map(s_map *map_info)
+{
+    int i;
+
+    i = 0;
+    while (i < MAP_VAR)
+    {
+        if (map_info->pnt_array[i])
+            free(map_info->pnt_array[i]);
+        i++;
+    }
+    i = 0;
+    while (map_info->expected[i])
+        free(map_info->expected[i++]);
+    free(map_info->expected);
+    if (map_info->map)
+        free(map_info->map);
+    i = 0;
+    while (i < map_info->height)
+    {
+        free(map_info->map_array[i++]);
+    }
+    free(map_info->map_array);
+}
+
 int parse_file(char *map_file, s_map *map_info)
 {
     int fd;
@@ -123,6 +144,7 @@ int parse_file(char *map_file, s_map *map_info)
         ret = check_inputs(map_info);
     close(fd);
     if (ret == 0)
-        map_info->map_int_array = map_int_array(map_info->map_array);
+        map_info->map_int_array = map_int_array(map_info->map_array, map_info->start);
+    free_char_map(map_info);
     return ret;
 }

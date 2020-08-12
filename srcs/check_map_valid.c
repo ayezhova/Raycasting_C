@@ -32,12 +32,12 @@ int check_orientarion(int i, int j, s_map *map_info)
 {
     if (is_edge(i, j, map_info))
         return -3;
-    map_info->orientation = map_info->map_array[i][j];
-    map_info->map_array[i][j] = '0';
-    if (map_info->start[0] != -1)
+    if (map_info->orientation != ' ')
         return -5;
-    map_info->start[0] = i;
-    map_info->start[1] = j;
+    map_info->orientation = map_info->map_array[i][j];
+    // map_info->map_array[i][j] = '0';
+    // map_info->start[0] = i;
+    // map_info->start[1] = j;
     return 1;
 }
 
@@ -48,7 +48,6 @@ int check_map_valid(s_map *map_info)
 
     i = -1;
     map_info->map_array = ft_strsplit(map_info->map, '\n');
-    map_info->start[0] = -1;
     while (++i < map_info->height)
     {
         j = -1;

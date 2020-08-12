@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayezhova <ayezhova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anastasiyayezhova <anastasiyayezhova@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 20:11:58 by ayezhova          #+#    #+#             */
-/*   Updated: 2020/01/17 07:07:41 by ayezhova         ###   ########.fr       */
+/*   Updated: 2020/07/30 13:24:51 by anastasiyay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,7 @@ char				*ft_itoa_base(long int num, int base, int lower,
 int					ft_max(int a, int b);
 int					ft_countdigits_nosign(int n);
 int					ft_exp(int base, unsigned int power);
+int					ft_abs(int a);
+float				ft_fabs(float a);
 
 #endif

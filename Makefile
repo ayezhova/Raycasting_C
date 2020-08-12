@@ -1,9 +1,8 @@
 NAME = cub3d
 SRC = srcs
 OBJ = $(addprefix $(SRC)/,main.o check_map.o check_map_valid.o check_inputs.o \
-	put_image.o put_image_small.o tile_image.o make_trapezoid_img.o \
-	trap_img_helper.o set_pos_info.o draw_screen.o char_map_to_int.o \
-	key_events.o )
+	set_pos_info.o draw_screen.o char_map_to_int.o \
+	key_events.o draw_col.o clear_img.o)
 OBJ_INC = raycasting.h
 LIBFT = libft/libft.a
 LIBFT_INC = libft/libft.h

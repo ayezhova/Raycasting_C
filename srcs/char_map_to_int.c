@@ -40,7 +40,14 @@ int len_array(char **map_array)
     return i;
 }
 
-int *get_map_row(char *map_str, int space_bet_letters)
+void update_start(int row, int col, int *map_row, int start[2])
+{
+    start[0] = row;
+    start[1] = col;
+    map_row[col] = 0;
+}
+
+int *get_map_row(int row, char *map_str, int space_bet_letters, int start[2])
 {
     int len_row_str;
     int len_row;
@@ -62,13 +69,15 @@ int *get_map_row(char *map_str, int space_bet_letters)
             map_row[i] = 0;
         else if (map_str[j] == '0' || map_str[j] == '1' || map_str[j] == '2')
             map_row[i] = map_str[j] - '0';
+        else if (is_orientation(map_str[j]))
+            update_start(row, i, map_row, start);
         i++;
         j += space_bet_letters + 1;
     }
     return map_row;
 }
 
-int **map_int_array(char **map_array)
+int **map_int_array(char **map_array, int start[2])
 {
     int **map_int_array;
     int i;
@@ -80,11 +89,12 @@ int **map_int_array(char **map_array)
     j = 0;
     space_bet_letters = get_space_between_letters(map_array);
     len = len_array(map_array);
-    map_int_array = (int **)malloc(sizeof(int *) * len);
+    map_int_array = (int **)malloc(sizeof(int *) * len + 1);
     while (i < len)
     {
-        map_int_array[i] = get_map_row(map_array[i], space_bet_letters);
+        map_int_array[i] = get_map_row(i, map_array[i], space_bet_letters, start);
         i++;
     }
+    map_int_array[i] = NULL;
     return map_int_array;
 }
