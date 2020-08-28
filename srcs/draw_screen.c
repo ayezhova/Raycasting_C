@@ -98,22 +98,72 @@ void calc_height_wall(s_dist_calc *dist, s_map *map_info, s_position *pos)
     dist->row_stop = stop < map_info->R_y ? stop : map_info->R_y;
 }
 
+/*
+    Texture determined by direction in x and y and by the side hit.
+    Side hit == 1 when hit a vertical wall, so EA or WE
+    Side hit == 0 when hit a horizontal wall, so NO or SO
+    When the row direction is negative, the ray can hit NO, WE or EA walls
+    When the row direction is positive, the ray can hit SO, WE or EA walls
+    When the col direction is negative, the ray can hit NO, WE or SO walls
+    When the col direction is positive, the ray can hit NO, EA or SO walls
+    Putting everything together,
+    When row dir is positive and side hit is 0, we hit a NO wall
+    When row dir is negative and side hit is 0, we hit a SO wall
+    When col dir is positive and side hit is 1, we hit an EA wall
+    When col fir is negative and side hit is 1, we hit a WE wall
+*/
+
+int getTextureNum(int step_dir[2], int side_hit)
+{
+    int texture;
+
+    if (side_hit == 0)
+    {
+        if (step_dir[0] < 0)
+            texture = 0;
+        else
+            texture = 1;
+    }
+    else
+    {
+        if (step_dir[1] < 0)
+            texture = 2;
+        else
+            texture = 3;
+    }
+    // if (side_hit == 0)
+    // {
+    //     if (cur_loc[0] > map_loc[0])
+    //         texture = 0;
+    //     else
+    //         texture = 1;
+    // }
+    // else
+    // {
+    //     if (cur_loc[1] > map_loc[1])
+    //         texture = 3;
+    //     else
+    //         texture = 2;
+    // }
+    return texture;
+}
+
 void draw_screen(s_map *map_info, s_position *pos, s_mlx_pnts *mlx_pnts, s_img *new_img)
 {
     int col;
     s_dist_calc dist;
     s_img orig_img;
     s_background back_info;
+    int texture;
 
-    printf("x: %f, y: %f\n", pos->cur_position[0], pos->cur_position[1]);
     init_back_info(&back_info, map_info);
-    orig_img.img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
-        "default_textures/wall_1.xpm", &orig_img.width, &orig_img.height);
-    orig_img.mem_address = mlx_get_data_addr(orig_img.img_pnt,
-        &orig_img.bits_per_pixel, &orig_img.size_line, &orig_img.endian);
+    // orig_img.img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+    //     (*map_info->NO) + 3, &orig_img.width, &orig_img.height);
+    // orig_img.mem_address = mlx_get_data_addr(orig_img.img_pnt,
+    //     &orig_img.bits_per_pixel, &orig_img.size_line, &orig_img.endian);
     col = 0;
     new_img->bits_per_pixel = new_img->size_line / new_img->width;
-    orig_img.bits_per_pixel = orig_img.size_line / orig_img.width;
+    // orig_img.bits_per_pixel = orig_img.size_line / orig_img.width;
     clear_img(new_img);
     mlx_clear_window(mlx_pnts->mlx_pnt, mlx_pnts->win_pnt);
     while (col < map_info->R_x)
@@ -121,8 +171,11 @@ void draw_screen(s_map *map_info, s_position *pos, s_mlx_pnts *mlx_pnts, s_img *
         set_dist_vars(&dist, col, map_info, pos);
         move_till_wall(&dist, map_info);
         calc_height_wall(&dist, map_info, pos);
+        // unclear
+        texture = getTextureNum(dist.step_dir, dist.side_hit);
+        add_col_to_image(&back_info, &dist, new_img, &map_info->wall_text[texture]);
         
-        add_col_to_image(&back_info, &dist, new_img, &orig_img);
+        // add_col_to_image(&back_info, &dist, new_img, &orig_img);
         col++;
     }
     mlx_put_image_to_window(mlx_pnts->mlx_pnt, mlx_pnts->win_pnt, new_img->img_pnt, 0, 0);

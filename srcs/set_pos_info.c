@@ -2,13 +2,21 @@
 
 void set_north_direction(s_position *pos_info)
 {
+    pos_info->cur_direction[0] = -1.0;
+    pos_info->cur_direction[1] = 0.0;
+    pos_info->camera_plane[0] = 0;
+    pos_info->camera_plane[1] = 0.66;
+}
+
+void set_east_direction(s_position *pos_info)
+{
     pos_info->cur_direction[0] = 0.0;
     pos_info->cur_direction[1] = 1.0;
     pos_info->camera_plane[0] = 0.66;
     pos_info->camera_plane[1] = 0;
 }
 
-void set_east_direction(s_position *pos_info)
+void set_south_direction(s_position *pos_info)
 {
     pos_info->cur_direction[0] = 1.0;
     pos_info->cur_direction[1] = 0.0;
@@ -16,20 +24,12 @@ void set_east_direction(s_position *pos_info)
     pos_info->camera_plane[1] = -0.66;
 }
 
-void set_south_direction(s_position *pos_info)
+void set_west_direction(s_position *pos_info)
 {
     pos_info->cur_direction[0] = 0.0;
     pos_info->cur_direction[1] = -1.0;
     pos_info->camera_plane[0] = -0.66;
     pos_info->camera_plane[1] = 0;
-}
-
-void set_west_direction(s_position *pos_info)
-{
-    pos_info->cur_direction[0] = -1.0;
-    pos_info->cur_direction[1] = 0.0;
-    pos_info->camera_plane[0] = 0;
-    pos_info->camera_plane[1] = 0.66;
 }
 
 void set_up_pos_info(s_position *pos_info, s_map *map_info)

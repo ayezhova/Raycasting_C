@@ -35,6 +35,19 @@ typedef struct t_line
 /* Amount of map info expcting to get*/
 # define MAP_VAR 8
 
+/* Image struct */
+typedef struct t_img
+{
+    void *img_pnt;
+    int width;
+    int height;
+    int bits_per_pixel;
+    int size_line;
+    int endian;
+    char *mem_address;
+} s_img;
+
+
 typedef struct t_map
 {
     int R_x;
@@ -57,6 +70,7 @@ typedef struct t_map
     char **map_array;
     int **map_int_array;
     int height;
+    s_img wall_text[4];
 } s_map;
 
 typedef struct t_drawinfo
@@ -64,18 +78,6 @@ typedef struct t_drawinfo
     s_map *map_info;
     s_mlx_pnts *mlx_pnts;
 } s_drawinfo;
-
-/* Image struct */
-typedef struct t_img
-{
-    void *img_pnt;
-    int width;
-    int height;
-    int bits_per_pixel;
-    int size_line;
-    int endian;
-    char *mem_address;
-} s_img;
 
 typedef struct t_img_iter
 {
@@ -129,6 +131,7 @@ typedef struct t_dist_calc
     int line_height;
     int row_start;
     int row_stop;
+    int col_texture;
 } s_dist_calc;
 
 typedef struct t_key_arg
@@ -191,5 +194,6 @@ void rotate_left(int **map, s_position *pos);
 
 /* Escape */
 void escape_cub3d(s_map *map_info);
+void free_char_map(s_map *map_info);
 
 #endif

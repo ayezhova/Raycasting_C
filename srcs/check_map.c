@@ -143,8 +143,8 @@ int parse_file(char *map_file, s_map *map_info)
     if (ret == 0)
         ret = check_inputs(map_info);
     close(fd);
+    printf("ret: %d\n", ret);
     if (ret == 0)
         map_info->map_int_array = map_int_array(map_info->map_array, map_info->start);
-    free_char_map(map_info);
     return ret;
 }

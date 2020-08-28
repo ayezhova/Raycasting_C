@@ -51,17 +51,21 @@ void free_map_info(s_map *map_info)
     int i;
 
     i = 0;
-    while (i < map_info->height)
+    if (map_info->map_int_array)
     {
-        free(map_info->map_int_array[i++]);
+        while (i < map_info->height)
+        {
+            free(map_info->map_int_array[i++]);
+        }
+            free(map_info->map_int_array);
     }
-    free(map_info->map_int_array);
 }
 
 void escape_cub3d(s_map *map_info)
 {
-    printf("Thanks for playing!\n");
+    ft_putstr("Thanks for playing!\n");
     free_map_info(map_info);
+    free_char_map(map_info);
     exit(0);
 }
 
@@ -87,6 +91,64 @@ void error_quit(int error_code, s_map *map_info)
     else if (error_code == -5)
         ft_putstr("Invalid form\n");
     free_map_info(map_info);
+    free_char_map(map_info);
+    exit(error_code);
+}
+
+// FOR DEBUG ALL DIFFERENT, MAKE  ALL SAME IN FINAL
+void set_default_textures(s_map *map_info, s_mlx_pnts *mlx_pnts)
+{
+    int i = 1;
+    while (i < 5)
+    {
+        if (!*(&map_info->pnt_array[i]))
+        {
+            map_info->wall_text[i - 1].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+            "default_textures/wall_1.xpm", &(map_info->wall_text[i - 1].width), &(map_info->wall_text[i - 1].height));
+            *(&map_info->pnt_array[i]) = ft_strdup("NO default_textures/wall_1.xpm");
+        }
+        else
+        {
+            map_info->wall_text[i - 1].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+                *(&map_info->pnt_array[i]) + 3, &map_info->wall_text[i - 1].width, &map_info->wall_text[i - 1].height);
+        }
+        map_info->wall_text[i - 1].mem_address = mlx_get_data_addr(map_info->wall_text[i - 1].img_pnt,
+            &(map_info->wall_text[i - 1].bits_per_pixel), &(map_info->wall_text[i - 1].size_line), &(map_info->wall_text[i - 1].endian));
+        map_info->wall_text[i - 1].bits_per_pixel = map_info->wall_text[i - 1].size_line / map_info->wall_text[i - 1].width;
+        i++;
+    }
+    // if (!(*map_info->NO))
+        // map_info->wall_text[0].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+        //     "default_textures/wall_1.xpm", &map_info->wall_text[0].width, &map_info->wall_text[0].height);
+    // else
+    //     map_info->wall_text[0].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+    //         (*map_info->NO) + 3, &map_info->wall_text[0].width, &map_info->wall_text[0].height);
+    // if (!(*map_info->SO))
+    //     map_info->wall_text[1].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+    //         "default_textures/wall_2.xpm", &map_info->wall_text[1].width, &map_info->wall_text[1].height);
+    // else
+    //     map_info->wall_text[1].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+    //         (*map_info->SO) + 3, &map_info->wall_text[1].width, &map_info->wall_text[1].height);
+    // if (!(*map_info->WE))
+    //     map_info->wall_text[2].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+    //         "default_textures/wall_3.xpm", &map_info->wall_text[2].width, &map_info->wall_text[2].height);
+    // else
+    //     map_info->wall_text[2].img_pnt = mlx_xpm_file_to_image(mlx_pnts->mlx_pnt,
+    //         (*map_info->WE) + 3, &map_info->wall_text[2].width, &map_info->wall_text[2].height);
+   
+
+        // orig_img.mem_address = mlx_get_data_addr(orig_img.img_pnt,
+        //     &orig_img.bits_per_pixel, &orig_img.size_line, &orig_img.endian);
+
+        // *map_info->NO = ft_strdup("NO default_textures/wall_1.xpm");
+    // if (!(*map_info->SO))
+    //     *map_info->SO = ft_strdup("SO default_textures/wall_2.xpm");
+    // if (!(*map_info->WE))
+    //     *map_info->WE = ft_strdup("WE default_textures/wall_3.xpm");
+    // if (!(*map_info->EA))
+    //     *map_info->EA = ft_strdup("EA default_textures/wall_4.xpm");
+    
+
 }
 
 void start_game(s_map *map_info)
@@ -106,6 +168,7 @@ void start_game(s_map *map_info)
         &new_img.bits_per_pixel, &new_img.size_line, &new_img.endian);
     new_img.width = map_info->R_x;
     new_img.height = map_info->R_y;
+    set_default_textures(map_info, &mlx_pnts);
     draw_screen(map_info, &pos_info, &mlx_pnts, &new_img);
     mlx_loop(mlx_pnts.mlx_pnt);
 }
